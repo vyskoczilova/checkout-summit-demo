@@ -162,6 +162,24 @@ This is the chicken-and-egg case all PR-preview workflows have. Plan:
   with no token leakage risk. The `git:directory` clone of `refs/pull/N/head`
   works for forks too.
 
+## README updates
+
+`README.md` gets a tighter rewrite as part of this work — the current install
+section assumes a local WordPress and is now out of date. New shape:
+
+- One-line description.
+- **Try it in your browser** — link to "open the latest `main` in
+  Playground" (a permanent Playground URL pointing at the `main` ref via
+  `git:directory`, mirroring what the PR-preview workflow generates per PR).
+- **Bring your own Gemini API key** callout: a short paragraph telling
+  attendees that no key is preloaded, how to get one
+  (<https://aistudio.google.com/>), and where to paste it
+  (Settings → AI Connectors → Google) once Playground boots.
+- Trim Requirements and Install sections down to the essentials. Keep the Use
+  section. Drop the file-tree breakdown — it now lives in `CLAUDE.md`.
+
+Target length: under 60 lines.
+
 ## Out of scope
 
 - Automated UI assertions inside Playground (Playwright, etc.).
