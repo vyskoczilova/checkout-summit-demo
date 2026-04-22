@@ -29,9 +29,9 @@
             "step": "installPlugin",
             "pluginData": {
                 "resource": "git:directory",
-                "url": "https://github.com/{{REPO}}",
-                "ref": "{{PR_REF}}",
-                "refType": "refname"
+                "url": "https://github.com/vyskoczilova/checkout-summit-demo",
+                "ref": "main",
+                "refType": "branch"
             },
             "options": { "activate": true }
         },
@@ -40,7 +40,7 @@
             "path": "/wordpress/wp-content/uploads/csd-import.csv",
             "data": {
                 "resource": "url",
-                "url": "https://raw.githubusercontent.com/{{REPO}}/{{PR_REF}}/playground/sample-products.csv"
+                "url": "https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/sample-products.csv"
             }
         },
         {
@@ -48,7 +48,7 @@
             "path": "/wordpress/wp-content/mu-plugins/csd-bootstrap.php",
             "data": {
                 "resource": "url",
-                "url": "https://raw.githubusercontent.com/{{REPO}}/{{PR_REF}}/playground/csd-bootstrap.php"
+                "url": "https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/csd-bootstrap.php"
             }
         }
     ]

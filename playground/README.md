@@ -13,9 +13,17 @@ manually reviewing this plugin in a browser — no local WordPress required.
 
 ## How it's used
 
-The `.github/workflows/playground-preview.yml` workflow renders this blueprint
-on every pull request — substituting `{{REPO}}` and `{{PR_REF}}` — and posts a
-sticky comment with a one-click Playground link.
+Two files:
+
+- **`blueprint.json`** — template with `{{REPO}}` and `{{PR_REF}}` placeholders.
+  The `.github/workflows/playground-preview.yml` workflow substitutes these on
+  every PR and posts a sticky comment with the rendered Playground link.
+- **`blueprint-main.json`** — same content, but with `main` baked in.
+  Standalone — opened from the README's "Open main in Playground" link via
+  `?blueprint-url=`.
+
+Don't try to open the template (`blueprint.json`) directly in Playground — it
+has unsubstituted `{{REPO}}` placeholders and will fail validation.
 
 ## API key
 

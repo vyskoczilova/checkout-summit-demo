@@ -37,7 +37,12 @@ jobs:
           RENDERED=$(REPO="$REPO" PR_REF="$PR_REF" \
             python3 -c 'import os,sys; s=open("playground/blueprint.json").read(); s=s.replace("{{REPO}}",os.environ["REPO"]).replace("{{PR_REF}}",os.environ["PR_REF"]); sys.stdout.write(s)')
 
-          ENCODED=$(printf '%s' "$RENDERED" | jq -sRr @uri)
+          # Minify and encode for the URL fragment.
+          # Playground's hash parser does NOT decodeURIComponent — it parses the
+          # raw fragment as JSON. So we must keep structural JSON chars raw
+          # ({ } : , [ ] / ? =) and encode only quotes / spaces / etc.
+          MINIFIED=$(printf '%s' "$RENDERED" | jq -c .)
+          ENCODED=$(MIN="$MINIFIED" python3 -c 'import os; from urllib.parse import quote; print(quote(os.environ["MIN"], safe="{}[]:,/?=&_-.!~*()$"), end="")')
           echo "url=https://playground.wordpress.net/#$ENCODED" >> "$GITHUB_OUTPUT"
 
       - name: Comment on PR
@@ -48,7 +53,9 @@ jobs:
           message: |
             ### ▶️ [Open this PR in WordPress Playground](${{ steps.render.outputs.url }})
 
-            Boots WordPress 7.0 + WooCommerce + the WP `ai` plugin + the Google provider, installs this plugin from `${{ steps.render.outputs.pr_ref }}`, and imports two beanie sample products.
+            ⌘/Ctrl-click the link above to open in a new tab.
+
+            Boots WordPress + WooCommerce + the WP `ai` plugin + the Google provider, installs this plugin from `${{ steps.render.outputs.pr_ref }}`, and imports two beanie sample products.
 
             **Bring your own Gemini API key.** After Playground loads, go to **Settings → AI Connectors → Google** and paste your key (get one at https://aistudio.google.com/). Playground stores it in IndexedDB so you only paste it once per browser.
 
