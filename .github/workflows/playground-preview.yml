@@ -48,7 +48,9 @@ jobs:
           message: |
             ### ▶️ [Open this PR in WordPress Playground](${{ steps.render.outputs.url }})
 
-            Boots WordPress 7.0 + WooCommerce + the WP `ai` plugin + the Google provider, installs this plugin from `${{ steps.render.outputs.pr_ref }}`, and imports two beanie sample products.
+            ⌘/Ctrl-click the link above to open in a new tab.
+
+            Boots WordPress + WooCommerce + the WP `ai` plugin + the Google provider, installs this plugin from `${{ steps.render.outputs.pr_ref }}`, and imports two beanie sample products.
 
             **Bring your own Gemini API key.** After Playground loads, go to **Settings → AI Connectors → Google** and paste your key (get one at https://aistudio.google.com/). Playground stores it in IndexedDB so you only paste it once per browser.
 

@@ -9,9 +9,10 @@ product gallery — using **WordPress 7.0's built-in AI Client**.
 
 ## Try it in your browser
 
-Every PR posts a one-click WordPress Playground link with WP nightly,
+Every PR posts a one-click WordPress Playground link with WordPress,
 WooCommerce, the WP `ai` plugin + Google provider, this plugin, and two
-beanie sample products preloaded. To preview the latest `main`:
+beanie sample products preloaded. To preview the latest `main` (⌘/Ctrl-click
+to open in a new tab):
 
 ▶️ **[Open `main` in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/blueprint-main.json)**
 

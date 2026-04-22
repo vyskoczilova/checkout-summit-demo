@@ -1,7 +1,6 @@
 {
     "$schema": "https://playground.wordpress.net/blueprint-schema.json",
-    "preferredVersions": { "php": "8.2", "wp": "nightly" },
-    "phpExtensionBundles": ["kitchen-sink"],
+    "preferredVersions": { "php": "8.2", "wp": "latest" },
     "features": { "networking": true },
     "landingPage": "/wp-admin/edit.php?post_type=product",
     "login": true,
@@ -27,8 +26,7 @@
                 "resource": "git:directory",
                 "url": "https://github.com/{{REPO}}",
                 "ref": "{{PR_REF}}",
-                "refType": "refname",
-                "path": "/"
+                "refType": "refname"
             },
             "options": { "activate": true }
         },
@@ -42,7 +40,7 @@
         },
         {
             "step": "runPHP",
-            "code": "<?php require '/wordpress/wp-load.php'; require_once WP_PLUGIN_DIR . '/woocommerce/includes/import/class-wc-product-csv-importer.php'; $importer = new WC_Product_CSV_Importer( '/wordpress/wp-content/uploads/csd-import.csv', array( 'parse' => true, 'update_existing' => false ) ); $importer->import(); ?>"
+            "code": "<?php require '/wordpress/wp-load.php'; require_once WP_PLUGIN_DIR . '/woocommerce/includes/import/class-wc-product-csv-importer.php'; $importer = new WC_Product_CSV_Importer( '/wordpress/wp-content/uploads/csd-import.csv', array( 'parse' => true, 'update_existing' => false ) ); $importer->import();"
         }
     ]
 }
