@@ -37,10 +37,16 @@ jobs:
           RENDERED=$(REPO="$REPO" PR_REF="$PR_REF" \
             python3 -c 'import os,sys; s=open("playground/blueprint.json").read(); s=s.replace("{{REPO}}",os.environ["REPO"]).replace("{{PR_REF}}",os.environ["PR_REF"]); sys.stdout.write(s)')
 
-          # Minify (strip whitespace) before URL-encoding — Playground's inline parser
-          # rejects pretty-printed JSON in the URL hash.
+          # Minify and encode for the URL fragment.
+          # Playground's hash parser does NOT decodeURIComponent — it parses the
+          # raw fragment as JSON. So we must keep structural JSON chars raw
+          # ({ } : , [ ] / ? =) and encode only quotes / spaces / etc.
           MINIFIED=$(printf '%s' "$RENDERED" | jq -c .)
-          ENCODED=$(printf '%s' "$MINIFIED" | jq -sRr @uri)
+          ENCODED=$(MIN="$MINIFIED" python3 -c "
+import os
+from urllib.parse import quote
+print(quote(os.environ['MIN'], safe='{}[]:,/?=&_-.!~*()$'), end='')
+")
           echo "url=https://playground.wordpress.net/#$ENCODED" >> "$GITHUB_OUTPUT"
 
       - name: Comment on PR
