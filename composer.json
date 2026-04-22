@@ -1,0 +1,17 @@
+{
+    "name": "kybernaut/checkout-summit-demo",
+    "description": "Checkout Summit Palermo demo plugin",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CheckoutSummitDemo\\Tests\\": "tests/"
+        }
+    }
+}
