@@ -1,0 +1,41 @@
+{
+    "scene_id": "table_surface_side",
+    "_note": "Lock all fields marked [FIXED]. Only modify fields marked [VARIABLE].",
+  
+    "subject": {
+      "description": "[VARIABLE] Replace with your product name and brief appearance",
+      "placement": "[FIXED] centered on a matte white marble surface",
+      "scale_hint": "[FIXED] small object, approx. 10cm tall, occupying 15–20% of frame height"
+    },
+  
+    "environment": {
+      "scene": "[FIXED] minimal flat-lay table surface, close-up lifestyle context",
+      "surfaces": "[FIXED] white Carrara marble with faint veining",
+      "props": "[FIXED] single dried botanical stem to the right, small ceramic bowl to the left",
+      "background_depth": "[FIXED] plain off-white wall, minimal, clean"
+    },
+  
+    "camera": {
+      "angle": "[VARIABLE] 30-degree side angle OR 15-degree low side angle – pick one per render",
+      "height": "[FIXED] 15cm above table surface",
+      "lens": "[FIXED] 85mm equivalent",
+      "aperture": "[FIXED] f/3.5, background and props softly out of focus",
+      "framing": "[FIXED] product centered, slight negative space above"
+    },
+  
+    "lighting": {
+      "type": "[FIXED] studio softbox from upper left",
+      "quality": "[FIXED] soft, even, clean highlights on product surface",
+      "temperature": "[FIXED] neutral to cool, 4500K–5000K",
+      "fill": "[FIXED] white reflector card from right, 50% fill strength"
+    },
+  
+    "style": {
+      "aesthetic": "[FIXED] clean minimalist product photography",
+      "color_palette": "[FIXED] white, off-white, light grey, single natural accent",
+      "mood": "[FIXED] crisp, premium, e-commerce lifestyle",
+      "render_quality": "[FIXED] photorealistic, tack-sharp product, no grain"
+    },
+  
+    "negative_prompts": "[FIXED] no people, no text, no logos, no watermarks, no cartoon, no CGI look, no clutter, no colored backgrounds"
+  }

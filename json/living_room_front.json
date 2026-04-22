@@ -1,0 +1,41 @@
+{
+    "scene_id": "living_room_front",
+    "_note": "Lock all fields marked [FIXED]. Only modify fields marked [VARIABLE].",
+  
+    "subject": {
+      "description": "[VARIABLE] Replace with your product name and brief appearance",
+      "placement": "[FIXED] centered in frame, resting on a light oak coffee table",
+      "scale_hint": "[FIXED] small object, approx. 10cm tall, occupying 15–20% of frame height"
+    },
+  
+    "environment": {
+      "scene": "[FIXED] modern Scandinavian living room",
+      "surfaces": "[FIXED] light oak coffee table, cream linen sofa in background",
+      "props": "[FIXED] small linen book stack to the left, dried pampas grass in vase to the right",
+      "background_depth": "[FIXED] softly blurred, warm interior visible"
+    },
+  
+    "camera": {
+      "angle": "[VARIABLE] front-facing straight-on OR 45-degree side angle – pick one per render",
+      "height": "[FIXED] eye-level to table surface, approx. 30cm above table",
+      "lens": "[FIXED] 85mm equivalent",
+      "aperture": "[FIXED] f/2.8, shallow depth of field",
+      "framing": "[FIXED] rule of thirds, product on central axis"
+    },
+  
+    "lighting": {
+      "type": "[FIXED] soft natural window light from the left",
+      "quality": "[FIXED] diffused, no hard shadows",
+      "temperature": "[FIXED] warm, 3200K–3800K",
+      "fill": "[FIXED] subtle right-side fill to avoid deep shadows on product"
+    },
+  
+    "style": {
+      "aesthetic": "[FIXED] editorial lifestyle product photography",
+      "color_palette": "[FIXED] warm neutrals – cream, sand, warm white, muted sage",
+      "mood": "[FIXED] calm, aspirational, everyday luxury",
+      "render_quality": "[FIXED] photorealistic, sharp product, film grain subtle"
+    },
+  
+    "negative_prompts": "[FIXED] no people, no text, no logos, no watermarks, no cartoon, no CGI look, no overexposure, no clutter"
+  }
