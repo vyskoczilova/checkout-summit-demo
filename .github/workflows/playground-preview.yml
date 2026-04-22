@@ -42,11 +42,7 @@ jobs:
           # raw fragment as JSON. So we must keep structural JSON chars raw
           # ({ } : , [ ] / ? =) and encode only quotes / spaces / etc.
           MINIFIED=$(printf '%s' "$RENDERED" | jq -c .)
-          ENCODED=$(MIN="$MINIFIED" python3 -c "
-import os
-from urllib.parse import quote
-print(quote(os.environ['MIN'], safe='{}[]:,/?=&_-.!~*()$'), end='')
-")
+          ENCODED=$(MIN="$MINIFIED" python3 -c 'import os; from urllib.parse import quote; print(quote(os.environ["MIN"], safe="{}[]:,/?=&_-.!~*()$"), end="")')
           echo "url=https://playground.wordpress.net/#$ENCODED" >> "$GITHUB_OUTPUT"
 
       - name: Comment on PR
