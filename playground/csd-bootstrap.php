@@ -20,8 +20,8 @@ add_action( 'init', function () {
     // Belt-and-braces onboarding skip (in addition to setSiteOptions in the blueprint).
     update_option( 'woocommerce_onboarding_profile', array( 'completed' => true, 'skipped' => true ) );
 
-    // Import the beanies.
-    $csv = '/wordpress/wp-content/uploads/csd-import.csv';
+    // Import WooCommerce's bundled sample products (Beanie, Beanie with Logo, hoodies, etc.).
+    $csv = WP_PLUGIN_DIR . '/woocommerce/sample-data/sample_products.csv';
     $importer_file = WP_PLUGIN_DIR . '/woocommerce/includes/import/class-wc-product-csv-importer.php';
     if ( is_readable( $csv ) && is_readable( $importer_file ) ) {
         require_once $importer_file;

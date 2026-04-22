@@ -37,14 +37,6 @@
         },
         {
             "step": "writeFile",
-            "path": "/wordpress/wp-content/uploads/csd-import.csv",
-            "data": {
-                "resource": "url",
-                "url": "https://raw.githubusercontent.com/{{REPO}}/{{PR_REF}}/playground/sample-products.csv"
-            }
-        },
-        {
-            "step": "writeFile",
             "path": "/wordpress/wp-content/mu-plugins/csd-bootstrap.php",
             "data": {
                 "resource": "url",
