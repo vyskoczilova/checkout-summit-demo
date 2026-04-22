@@ -1,0 +1,3 @@
+.csd-ai-gallery .csd-status { margin: 8px 0; font-style: italic; }
+.csd-ai-gallery .csd-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
+.csd-ai-gallery .csd-thumb  { max-width: 120px; height: auto; border: 1px solid #ddd; }
