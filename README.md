@@ -1,5 +1,7 @@
 # Checkout Summit Demo
 
+By **Karolina Vyskočilová** · <https://kybernaut.cz/> · GPL-2.0-or-later
+
 A small WordPress plugin built for Checkout Summit Palermo. Adds an
 "AI Gallery Generator" metabox on WooCommerce product screens that turns one
 source image into two AI-generated lifestyle photos and attaches them to the
@@ -7,16 +9,17 @@ product gallery — using **WordPress 7.0's built-in AI Client**.
 
 ## Try it in your browser
 
-Every PR posts a one-click WordPress Playground link with WP 7.0, WooCommerce,
-the WP `ai` plugin + Google provider, this plugin, and two beanie sample
-products preloaded. To preview the latest `main`:
+Every PR posts a one-click WordPress Playground link with WP nightly,
+WooCommerce, the WP `ai` plugin + Google provider, this plugin, and two
+beanie sample products preloaded. To preview the latest `main`:
 
 ▶️ **[Open `main` in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/kybernaut/checkout-summit-demo/main/playground/blueprint.json)**
 
-> **Bring your own Gemini API key.** No key is preloaded. After Playground
-> boots, go to **Settings → AI Connectors → Google** and paste your own key
-> (get one at <https://aistudio.google.com/>). Playground stores it in
-> IndexedDB so you only paste it once per browser.
+> ⚠️ **Bring your own Gemini API key.** No key is preloaded — the repo is
+> public and any embedded secret would leak. After Playground boots, go to
+> **Settings → AI Connectors → Google** and paste your own key (free at
+> <https://aistudio.google.com/>). Playground stores it in IndexedDB so you
+> only paste it once per browser.
 
 ## Use
 
@@ -47,7 +50,3 @@ vendor/bin/phpunit
 
 Only the pure `Prompt_Builder` is unit-tested. The rest is verified in
 Playground.
-
-## License
-
-GPL-2.0-or-later. Author: Karolina Vyskočilová · <https://kybernaut.cz/>

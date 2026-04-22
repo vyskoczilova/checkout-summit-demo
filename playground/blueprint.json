@@ -1,6 +1,6 @@
 {
     "$schema": "https://playground.wordpress.net/blueprint-schema.json",
-    "preferredVersions": { "php": "8.2", "wp": "7.0" },
+    "preferredVersions": { "php": "8.2", "wp": "nightly" },
     "phpExtensionBundles": ["kitchen-sink"],
     "features": { "networking": true },
     "landingPage": "/wp-admin/edit.php?post_type=product",
