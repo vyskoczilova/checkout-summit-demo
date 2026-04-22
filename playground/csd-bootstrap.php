@@ -4,6 +4,11 @@
  * Description: One-time Playground setup — skips the WC onboarding wizard and imports the beanie sample products.
  */
 
+// Block the WC activation-redirect that would otherwise hijack the first page load.
+add_action( 'plugins_loaded', function () {
+    delete_transient( '_wc_activation_redirect' );
+}, 1 );
+
 add_action( 'init', function () {
     if ( get_option( 'csd_playground_bootstrap_done' ) ) {
         return;
@@ -12,11 +17,8 @@ add_action( 'init', function () {
         return;
     }
 
-    // Mark WC onboarding as complete so the setup wizard doesn't nag.
+    // Belt-and-braces onboarding skip (in addition to setSiteOptions in the blueprint).
     update_option( 'woocommerce_onboarding_profile', array( 'completed' => true, 'skipped' => true ) );
-    update_option( 'woocommerce_task_list_hidden', 'yes' );
-    update_option( 'woocommerce_task_list_complete', 'yes' );
-    update_option( 'woocommerce_admin_install_timestamp', time() );
 
     // Import the beanies.
     $csv = '/wordpress/wp-content/uploads/csd-import.csv';

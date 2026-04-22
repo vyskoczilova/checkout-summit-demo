@@ -6,6 +6,16 @@
     "login": true,
     "steps": [
         {
+            "step": "setSiteOptions",
+            "options": {
+                "blogname": "Checkout Summit Demo",
+                "woocommerce_task_list_hidden": "yes",
+                "woocommerce_extended_task_list_hidden": "yes",
+                "woocommerce_show_marketplace_suggestions": "no",
+                "woocommerce_allow_tracking": "no"
+            }
+        },
+        {
             "step": "installPlugin",
             "pluginData": { "resource": "wordpress.org/plugins", "slug": "woocommerce" },
             "options": { "activate": true }
