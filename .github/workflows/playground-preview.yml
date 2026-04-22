@@ -1,0 +1,63 @@
+name: Playground preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  contents: read
+
+concurrency:
+  group: playground-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.number != null
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Render blueprint
+        id: render
+        env:
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ -n "$PR_NUMBER" ]; then
+            PR_REF="refs/pull/${PR_NUMBER}/head"
+          else
+            PR_REF="$REF_NAME"
+          fi
+          echo "pr_ref=$PR_REF" >> "$GITHUB_OUTPUT"
+
+          RENDERED=$(REPO="$REPO" PR_REF="$PR_REF" \
+            python3 -c 'import os,sys; s=open("playground/blueprint.json").read(); s=s.replace("{{REPO}}",os.environ["REPO"]).replace("{{PR_REF}}",os.environ["PR_REF"]); sys.stdout.write(s)')
+
+          ENCODED=$(printf '%s' "$RENDERED" | jq -sRr @uri)
+          echo "url=https://playground.wordpress.net/#$ENCODED" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        if: github.event.pull_request.number != null
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: playground-preview
+          message: |
+            ### ▶️ [Open this PR in WordPress Playground](${{ steps.render.outputs.url }})
+
+            Boots WordPress 7.0 + WooCommerce + the WP `ai` plugin + the Google provider, installs this plugin from `${{ steps.render.outputs.pr_ref }}`, and imports two beanie sample products.
+
+            **Bring your own Gemini API key.** After Playground loads, go to **Settings → AI Connectors → Google** and paste your key (get one at https://aistudio.google.com/). Playground stores it in IndexedDB so you only paste it once per browser.
+
+            _This comment updates on every push to the PR._
+
+      - name: Print preview URL (workflow_dispatch)
+        if: github.event.pull_request.number == null
+        env:
+          URL: ${{ steps.render.outputs.url }}
+        run: |
+          echo "Preview URL: $URL"
+          echo "::notice title=Playground preview::$URL"

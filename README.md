@@ -1,56 +1,42 @@
 # Checkout Summit Demo
 
-A small WordPress plugin built for the Checkout Summit in Palermo. It adds an
-"AI Gallery Generator" metabox to WooCommerce product edit screens: drop a
-product PNG, click one button, get two AI-generated lifestyle images attached to
-the product gallery.
+A small WordPress plugin built for Checkout Summit Palermo. Adds an
+"AI Gallery Generator" metabox on WooCommerce product screens that turns one
+source image into two AI-generated lifestyle photos and attaches them to the
+product gallery — using **WordPress 7.0's built-in AI Client**.
 
-Image generation is delegated to **WordPress 7.0's AI Client**
-(`wp_ai_client_prompt()`) — the plugin doesn't talk to any AI provider directly.
-Whichever connector you've configured in core handles the call.
+## Try it in your browser
 
-## Requirements
+Every PR posts a one-click WordPress Playground link with WP 7.0, WooCommerce,
+the WP `ai` plugin + Google provider, this plugin, and two beanie sample
+products preloaded. To preview the latest `main`:
 
-- WordPress **7.0+** with the AI Client available
-- An AI connector configured under **Settings → AI Connectors** that supports
-  image generation
-- WooCommerce active
-- PHP 7.4+
+▶️ **[Open `main` in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/kybernaut/checkout-summit-demo/main/playground/blueprint.json)**
 
-## Install
+> **Bring your own Gemini API key.** No key is preloaded. After Playground
+> boots, go to **Settings → AI Connectors → Google** and paste your own key
+> (get one at <https://aistudio.google.com/>). Playground stores it in
+> IndexedDB so you only paste it once per browser.
+
+## Use
+
+1. Open one of the imported beanie products.
+2. In the sidebar, find **AI Gallery Generator**.
+3. Click **Choose source image** (or skip — the featured image is used as a
+   fallback).
+4. Click **Generate gallery images**. ~10–30s later, two new images appear in
+   the gallery.
+
+## Local install
 
 ```bash
 cd wp-content/plugins
 git clone <repo-url> checkout-summit-demo
 ```
 
-Activate **Checkout Summit Demo** in **Plugins**.
-
-## Use
-
-1. Open any WooCommerce product edit screen.
-2. In the sidebar, find the **AI Gallery Generator** metabox.
-3. Click **Choose source image** to pick an image from the Media Library — or
-   skip it and the product's **featured image** will be used.
-4. Click **Generate gallery images**. ~10–30s later, two thumbnails appear and
-   the images are attached to the product's gallery.
-5. Save the product as usual.
-
-## How it works
-
-```
-checkout-summit-demo.php          bootstrap
-includes/
-  class-prompt-builder.php        loads JSON template, substitutes product, flattens to text
-  class-generator.php             calls wp_ai_client_prompt()->withFile()->generateImage()
-  class-ajax.php                  admin-ajax handler (nonce + cap + upload)
-  class-metabox.php               metabox + asset enqueue
-assets/admin.{js,css}             tiny vanilla-JS UI
-json/*.json                       scene templates (one per output image)
-```
-
-Add another scene by dropping a JSON file into `json/` and listing it in
-`includes/class-ajax.php` (the `$templates` array).
+Then activate it. Requires WordPress 7.0+, WooCommerce, PHP 7.4+, and an AI
+connector with image-generation capability configured under **Settings → AI
+Connectors**.
 
 ## Tests
 
@@ -59,8 +45,8 @@ composer install
 vendor/bin/phpunit
 ```
 
-Only the pure `Prompt_Builder` is unit-tested — the rest is thin glue over
-WordPress and the AI Client and is verified manually in a real WP install.
+Only the pure `Prompt_Builder` is unit-tested. The rest is verified in
+Playground.
 
 ## License
 
