@@ -31,7 +31,10 @@ class Ajax {
             wp_send_json_error( array( 'message' => 'No source image uploaded.' ), 400 );
         }
 
-        $check = wp_check_filetype( $_FILES['source_image']['name'] );
+        $check = wp_check_filetype_and_ext(
+            $_FILES['source_image']['tmp_name'],
+            $_FILES['source_image']['name']
+        );
         if ( $check['type'] !== 'image/png' ) {
             wp_send_json_error( array( 'message' => 'Source image must be a PNG.' ), 400 );
         }
