@@ -27,25 +27,21 @@ class Ajax {
             wp_send_json_error( array( 'message' => 'You do not have permission to edit this product.' ), 403 );
         }
 
-        if ( empty( $_FILES['source_image'] ) || empty( $_FILES['source_image']['tmp_name'] ) ) {
-            wp_send_json_error( array( 'message' => 'No source image uploaded.' ), 400 );
+        $source_id = isset( $_POST['source_attachment_id'] ) ? absint( $_POST['source_attachment_id'] ) : 0;
+        if ( ! $source_id ) {
+            $source_id = (int) get_post_thumbnail_id( $product_id );
         }
 
-        $check = wp_check_filetype_and_ext(
-            $_FILES['source_image']['tmp_name'],
-            $_FILES['source_image']['name']
-        );
-        if ( $check['type'] !== 'image/png' ) {
+        if ( ! $source_id ) {
+            wp_send_json_error( array( 'message' => 'Pick a PNG from the media library, or set a featured image first.' ), 400 );
+        }
+
+        $attachment = get_post( $source_id );
+        if ( ! $attachment || $attachment->post_type !== 'attachment' ) {
+            wp_send_json_error( array( 'message' => 'Selected source is not a media attachment.' ), 400 );
+        }
+        if ( get_post_mime_type( $source_id ) !== 'image/png' ) {
             wp_send_json_error( array( 'message' => 'Source image must be a PNG.' ), 400 );
-        }
-
-        require_once ABSPATH . 'wp-admin/includes/file.php';
-        require_once ABSPATH . 'wp-admin/includes/media.php';
-        require_once ABSPATH . 'wp-admin/includes/image.php';
-
-        $source_attachment_id = media_handle_upload( 'source_image', $product_id );
-        if ( is_wp_error( $source_attachment_id ) ) {
-            wp_send_json_error( array( 'message' => $source_attachment_id->get_error_message() ), 400 );
         }
 
         $templates = array(
@@ -55,7 +51,7 @@ class Ajax {
 
         try {
             $generator = new Generator( $templates );
-            $new_ids   = $generator->generate_for_product( $product_id, $source_attachment_id );
+            $new_ids   = $generator->generate_for_product( $product_id, $source_id );
         } catch ( \Throwable $e ) {
             wp_send_json_error( array( 'message' => $e->getMessage() ), 500 );
         }
