@@ -40,15 +40,11 @@
             frame = window.wp.media({
                 title: window.CSD_AI.mediaTitle,
                 button: { text: window.CSD_AI.mediaButton },
-                library: { type: 'image/png' },
+                library: { type: 'image' },
                 multiple: false,
             });
             frame.on('select', function () {
                 const att = frame.state().get('selection').first().toJSON();
-                if (att.mime !== 'image/png') {
-                    status.textContent = 'Only PNG files are supported.';
-                    return;
-                }
                 status.textContent = '';
                 setSelection(att);
             });

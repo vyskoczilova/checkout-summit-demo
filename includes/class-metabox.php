@@ -40,7 +40,7 @@ class Metabox {
             <input type="hidden" id="csd-source-id" value="">
             <div class="csd-source-preview"></div>
             <p class="description">
-                <?php esc_html_e( 'PNG only. If no image is chosen, the product\'s featured image will be used.', 'checkout-summit-demo' ); ?>
+                <?php esc_html_e( 'If no image is chosen, the product\'s featured image will be used.', 'checkout-summit-demo' ); ?>
             </p>
             <p>
                 <button type="button" class="button button-primary" id="csd-generate-btn">

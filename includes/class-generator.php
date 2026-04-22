@@ -38,6 +38,10 @@ class Generator {
         if ( ! $source_path || ! is_readable( $source_path ) ) {
             throw new \RuntimeException( 'Source image is not readable.' );
         }
+        $source_mime = get_post_mime_type( $source_attachment_id );
+        if ( ! $source_mime ) {
+            $source_mime = 'image/png';
+        }
 
         $title = $product->post_title;
         $short = $product->post_excerpt;
@@ -48,7 +52,7 @@ class Generator {
             $prompt = Prompt_Builder::from_template_file( $template_path, $title, (string) $short );
 
             $image = \wp_ai_client_prompt( $prompt )
-                ->withFile( $source_path, 'image/png' )
+                ->withFile( $source_path, $source_mime )
                 ->generateImage();
 
             $attachment_id = $this->save_generated_image( $image, $product_id, basename( $template_path, '.json' ) );

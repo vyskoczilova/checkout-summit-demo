@@ -33,15 +33,16 @@ class Ajax {
         }
 
         if ( ! $source_id ) {
-            wp_send_json_error( array( 'message' => 'Pick a PNG from the media library, or set a featured image first.' ), 400 );
+            wp_send_json_error( array( 'message' => 'Pick an image from the media library, or set a featured image first.' ), 400 );
         }
 
         $attachment = get_post( $source_id );
         if ( ! $attachment || $attachment->post_type !== 'attachment' ) {
             wp_send_json_error( array( 'message' => 'Selected source is not a media attachment.' ), 400 );
         }
-        if ( get_post_mime_type( $source_id ) !== 'image/png' ) {
-            wp_send_json_error( array( 'message' => 'Source image must be a PNG.' ), 400 );
+        $source_mime = (string) get_post_mime_type( $source_id );
+        if ( strpos( $source_mime, 'image/' ) !== 0 ) {
+            wp_send_json_error( array( 'message' => 'Source must be an image (got: ' . $source_mime . ').' ), 400 );
         }
 
         $templates = array(
