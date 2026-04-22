@@ -30,7 +30,8 @@ Activate **Checkout Summit Demo** in **Plugins**.
 
 1. Open any WooCommerce product edit screen.
 2. In the sidebar, find the **AI Gallery Generator** metabox.
-3. Pick a PNG of the product.
+3. Click **Choose source image** to pick a PNG from the Media Library — or skip
+   it and the product's **featured image** will be used (must be a PNG).
 4. Click **Generate gallery images**. ~10–30s later, two thumbnails appear and
    the images are attached to the product's gallery.
 5. Save the product as usual.
