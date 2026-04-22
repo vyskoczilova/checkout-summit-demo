@@ -1,0 +1,48 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "preferredVersions": { "php": "8.2", "wp": "nightly" },
+    "phpExtensionBundles": ["kitchen-sink"],
+    "features": { "networking": true },
+    "landingPage": "/wp-admin/edit.php?post_type=product",
+    "login": true,
+    "steps": [
+        {
+            "step": "installPlugin",
+            "pluginData": { "resource": "wordpress.org/plugins", "slug": "woocommerce" },
+            "options": { "activate": true }
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": { "resource": "wordpress.org/plugins", "slug": "ai" },
+            "options": { "activate": true }
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": { "resource": "wordpress.org/plugins", "slug": "ai-provider-for-google" },
+            "options": { "activate": true }
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "git:directory",
+                "url": "https://github.com/vyskoczilova/checkout-summit-demo",
+                "ref": "main",
+                "refType": "branch",
+                "path": "/"
+            },
+            "options": { "activate": true }
+        },
+        {
+            "step": "writeFile",
+            "path": "/wordpress/wp-content/uploads/csd-import.csv",
+            "data": {
+                "resource": "url",
+                "url": "https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/sample-products.csv"
+            }
+        },
+        {
+            "step": "runPHP",
+            "code": "<?php require '/wordpress/wp-load.php'; require_once WP_PLUGIN_DIR . '/woocommerce/includes/import/class-wc-product-csv-importer.php'; $importer = new WC_Product_CSV_Importer( '/wordpress/wp-content/uploads/csd-import.csv', array( 'parse' => true, 'update_existing' => false ) ); $importer->import(); ?>"
+        }
+    ]
+}

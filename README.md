@@ -13,7 +13,7 @@ Every PR posts a one-click WordPress Playground link with WP nightly,
 WooCommerce, the WP `ai` plugin + Google provider, this plugin, and two
 beanie sample products preloaded. To preview the latest `main`:
 
-▶️ **[Open `main` in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/blueprint.json)**
+▶️ **[Open `main` in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/blueprint-main.json)**
 
 > ⚠️ **Bring your own Gemini API key.** No key is preloaded — the repo is
 > public and any embedded secret would leak. After Playground boots, go to
