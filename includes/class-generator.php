@@ -52,8 +52,14 @@ class Generator {
             $prompt = Prompt_Builder::from_template_file( $template_path, $title, (string) $short );
 
             $image = \wp_ai_client_prompt( $prompt )
+                ->using_model_preference( 'gpt-image-1', 'gemini-2.5-flash-image' )
                 ->with_file( $source_path, $source_mime )
                 ->generate_image();
+
+            if ( is_wp_error( $image ) ) {
+                $image = \wp_ai_client_prompt( $prompt . "\n\n(No product reference image available; render based on the description alone.)" )
+                    ->generate_image();
+            }
 
             if ( is_wp_error( $image ) ) {
                 throw new \RuntimeException( 'AI Client error: ' . $image->get_error_message() );

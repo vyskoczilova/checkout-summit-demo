@@ -70,6 +70,25 @@ not throw on failure.
 - Do **not** import the underlying `WordPress\AiClient\AiClient` directly.
 - Do **not** use any provider SDK (OpenAI, Anthropic, Google) directly.
 
+### Capability gotcha — image input + image output
+
+When you chain `with_file()` and then `generate_image()`, the AI Client looks
+for a model that supports **both** `image_input` and `image_generation`. That
+set is narrow:
+
+- OpenAI: only `gpt-image-1` (DALL·E does NOT accept image input — it's
+  text-to-image only). `gpt-image-1` requires OpenAI account verification.
+- Google: `gemini-2.5-flash-image` ("Nano Banana").
+
+A connected OpenAI plugin showing "Text and image generation with GPT and
+DALL·E" is **not** sufficient on its own — the request will fail with
+`No models found that support image_generation for this prompt`.
+
+Mitigation in `Generator::generate_for_product`: prefer
+`gpt-image-1` / `gemini-2.5-flash-image` via
+`->using_model_preference(...)`, and fall back to a text-only prompt without
+`with_file()` if no multimodal-output model is available.
+
 ### Reference
 
 - Repo: <https://github.com/WordPress/wp-ai-client>
