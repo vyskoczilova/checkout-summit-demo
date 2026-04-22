@@ -52,8 +52,12 @@ class Generator {
             $prompt = Prompt_Builder::from_template_file( $template_path, $title, (string) $short );
 
             $image = \wp_ai_client_prompt( $prompt )
-                ->withFile( $source_path, $source_mime )
-                ->generateImage();
+                ->with_file( $source_path, $source_mime )
+                ->generate_image();
+
+            if ( is_wp_error( $image ) ) {
+                throw new \RuntimeException( 'AI Client error: ' . $image->get_error_message() );
+            }
 
             $attachment_id = $this->save_generated_image( $image, $product_id, basename( $template_path, '.json' ) );
             $new_attachment_ids[] = $attachment_id;
@@ -105,6 +109,22 @@ class Generator {
      */
     private function extract_bytes( $image ) {
         if ( is_object( $image ) ) {
+            if ( method_exists( $image, 'getBase64Data' ) ) {
+                $b64 = (string) $image->getBase64Data();
+                if ( $b64 !== '' ) {
+                    $decoded = base64_decode( $b64, true );
+                    if ( $decoded !== false ) {
+                        return $decoded;
+                    }
+                }
+            }
+            if ( method_exists( $image, 'getDataUri' ) ) {
+                $uri = (string) $image->getDataUri();
+                $bytes = self::decode_data_uri( $uri );
+                if ( $bytes !== '' ) {
+                    return $bytes;
+                }
+            }
             if ( method_exists( $image, 'getBytes' ) ) {
                 return (string) $image->getBytes();
             }
@@ -124,7 +144,14 @@ class Generator {
                 }
             }
             if ( method_exists( $image, '__toString' ) ) {
-                return (string) $image;
+                $candidate = (string) $image;
+                $bytes     = self::decode_data_uri( $candidate );
+                if ( $bytes !== '' ) {
+                    return $bytes;
+                }
+                if ( $candidate !== '' ) {
+                    return $candidate;
+                }
             }
             throw new \RuntimeException( 'Unrecognised image object returned by AI Client: ' . get_class( $image ) );
         }
@@ -142,6 +169,15 @@ class Generator {
             return $image;
         }
         throw new \RuntimeException( 'Unsupported image return type from AI Client.' );
+    }
+
+    private static function decode_data_uri( $candidate ) {
+        if ( strpos( $candidate, 'data:' ) !== 0 || strpos( $candidate, ';base64,' ) === false ) {
+            return '';
+        }
+        $b64 = substr( $candidate, strpos( $candidate, ',' ) + 1 );
+        $decoded = base64_decode( $b64, true );
+        return $decoded === false ? '' : $decoded;
     }
 
     private function append_to_gallery( $product_id, array $new_ids ) {
