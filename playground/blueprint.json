@@ -11,7 +11,6 @@
         "woocommerce_show_marketplace_suggestions": "no",
         "csd_seed_products": "1"
     },
-    "extraLibraries": ["wp-cli"],
     "steps": [
         {
             "step": "installPlugin",

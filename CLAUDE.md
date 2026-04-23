@@ -23,10 +23,12 @@ per-PR link too.
 - `includes/class-generator.php` — calls `wp_ai_client_prompt()`, saves to Media Library, appends to gallery meta
 - `includes/class-ajax.php` — `wp_ajax_csd_generate_gallery` handler; nonce + cap + source resolution
 - `includes/class-metabox.php` — registers metabox, enqueues `wp.media` + admin assets
-- `includes/class-playground-seed.php` — Playground-only seeder, runs on first admin request (see Playground section below)
+- `includes/class-playground-seed.php` — Playground-only seeder; loads `playground/seed-products.php` on first admin request (see Playground section below)
 - `assets/admin.{js,css}` — vanilla JS, opens `wp.media` frame, posts to AJAX
 - `json/*.json` — scene templates (one per output image); add a file here and list it in `class-ajax.php` to add a scene
-- `playground/` — blueprint, seed PHP, sample images (Sicilian ceramics)
+- `playground/blueprint.json` + `blueprint-main.json` — Playground blueprints (PR vs `main` preview); keep both in sync
+- `playground/seed-products.php` — array of the three Sicilian ceramic products (titles, prices, copy, image filename); included from `Playground_Seed`
+- `playground/images/` — featured-image files referenced by `seed-products.php` (lookup is extension-agnostic via `glob()`)
 - `.agents/skills/blueprint/SKILL.md` — installed blueprint-authoring skill, **read it before editing any `playground/*.json` file**
 
 ## Conventions
