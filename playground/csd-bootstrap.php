@@ -20,6 +20,19 @@ add_action( 'init', function () {
 	// Belt-and-braces onboarding skip (in addition to setSiteOptions in the blueprint).
 	update_option( 'woocommerce_onboarding_profile', array( 'completed' => true, 'skipped' => true ) );
 
+	// Mark the bootstrap as attempted *before* the import runs — a second,
+	// cascading PHP fatal on a later request would otherwise keep re-triggering
+	// the whole heavy path and mask the original error.
+	update_option( 'csd_playground_bootstrap_done', 1 );
+
+	try {
+		csd_playground_import_products();
+	} catch ( \Throwable $e ) {
+		error_log( '[CSD] Bootstrap failed: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine() );
+	}
+}, 20 );
+
+function csd_playground_import_products() {
 	// Playground's WP-Cron doesn't run on boot, so WooCommerce's scheduled
 	// table creation never fires and ~14 tables are missing (woo#57703).
 	// Force it synchronously before the importer touches lookup tables.
@@ -30,16 +43,34 @@ add_action( 'init', function () {
 	// The importer needs manage_product_terms; `init` fires as user 0.
 	wp_set_current_user( 1 );
 
-	$csv              = '/wordpress/wp-content/uploads/csd-import.csv';
-	$importer_file    = WP_PLUGIN_DIR . '/woocommerce/includes/import/class-wc-product-csv-importer.php';
-	$controller_file  = WP_PLUGIN_DIR . '/woocommerce/includes/admin/importers/class-wc-product-csv-importer-controller.php';
-
-	if ( ! is_readable( $csv ) || ! is_readable( $importer_file ) || ! is_readable( $controller_file ) ) {
+	$csv = '/wordpress/wp-content/uploads/csd-import.csv';
+	if ( ! is_readable( $csv ) ) {
 		return;
 	}
 
-	require_once $importer_file;
-	require_once $controller_file;
+	// WooCommerce's autoloader doesn't map the includes/import/ or
+	// admin/importers/ subdirectories, so the concrete classes below cannot
+	// resolve their parents via autoload — load the chain explicitly.
+	$wc = WP_PLUGIN_DIR . '/woocommerce';
+	$deps = array(
+		$wc . '/includes/import/abstract-wc-product-importer.php',
+		$wc . '/includes/import/class-wc-product-csv-importer.php',
+		$wc . '/includes/admin/importers/class-wc-product-csv-importer-controller.php',
+	);
+	foreach ( $deps as $dep ) {
+		if ( ! is_readable( $dep ) ) {
+			error_log( '[CSD] Missing WC importer file: ' . $dep );
+			return;
+		}
+		require_once $dep;
+	}
+
+	// wc_rest_upload_image_from_url() pulls in media_handle_sideload() and
+	// friends, which live in wp-admin/includes and aren't loaded on a
+	// frontend `init`.
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
 
 	// Read the header row so we can auto-map CSV columns to product fields.
 	// Without a mapping the importer silently produces zero products.
@@ -59,12 +90,12 @@ add_action( 'init', function () {
 	$importer = new \WC_Product_CSV_Importer(
 		$csv,
 		array(
-			'parse'             => true,
-			'mapping'           => $mapping,
-			'update_existing'   => false,
-			'delimiter'         => ',',
-			'prevent_timeouts'  => false,
-			'lines'             => -1,
+			'parse'            => true,
+			'mapping'          => $mapping,
+			'update_existing'  => false,
+			'delimiter'        => ',',
+			'prevent_timeouts' => false,
+			'lines'            => -1,
 		)
 	);
 	$results = $importer->import();
@@ -76,12 +107,4 @@ add_action( 'init', function () {
 		isset( $results['skipped'] )  ? count( $results['skipped'] )  : 0,
 		isset( $results['failed'] )   ? count( $results['failed'] )   : 0
 	) );
-
-	// Action Scheduler jobs don't drain on their own inside a Blueprint boot,
-	// which leaves lookup tables and some image sideloads half-done. Force it.
-	if ( function_exists( 'as_run_queue' ) ) {
-		as_run_queue();
-	}
-
-	update_option( 'csd_playground_bootstrap_done', 1 );
-}, 20 );
+}
