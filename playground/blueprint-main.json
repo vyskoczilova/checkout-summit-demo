@@ -34,7 +34,7 @@
         },
         {
             "step": "wp-cli",
-            "command": "wp eval-file wp-content/plugins/checkout-summit-demo/playground/seed-products.php"
+            "command": "wp eval \"$f=glob(WP_PLUGIN_DIR.'/*/playground/seed-products.php');if($f){include $f[0];}else{$dirs=array_map('basename',glob(WP_PLUGIN_DIR.'/*',GLOB_ONLYDIR));fwrite(STDERR,'seed-products.php not found under any plugin dir. Installed plugin dirs: '.implode(', ',$dirs).PHP_EOL);exit(1);}\""
         }
     ]
 }
