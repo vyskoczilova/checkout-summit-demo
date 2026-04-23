@@ -67,7 +67,21 @@ add_action( 'init', function () {
 			'lines'             => -1,
 		)
 	);
-	$importer->import();
+	$results = $importer->import();
+
+	error_log( sprintf(
+		'[CSD] CSV import: imported=%d updated=%d skipped=%d failed=%d',
+		isset( $results['imported'] ) ? count( $results['imported'] ) : 0,
+		isset( $results['updated'] )  ? count( $results['updated'] )  : 0,
+		isset( $results['skipped'] )  ? count( $results['skipped'] )  : 0,
+		isset( $results['failed'] )   ? count( $results['failed'] )   : 0
+	) );
+
+	// Action Scheduler jobs don't drain on their own inside a Blueprint boot,
+	// which leaves lookup tables and some image sideloads half-done. Force it.
+	if ( function_exists( 'as_run_queue' ) ) {
+		as_run_queue();
+	}
 
 	update_option( 'csd_playground_bootstrap_done', 1 );
 }, 20 );
