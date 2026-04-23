@@ -9,11 +9,11 @@ product gallery — using **WordPress 7.0's built-in AI Client**.
 
 ## Try it in your browser
 
-Every PR posts a one-click WordPress Playground link with WordPress,
-WooCommerce, the WP `ai` plugin + Google provider, this plugin, and three
-handcrafted Sicilian-ceramic sample products (Pigna, Testa di Moro, Piatto
-Trinacria) preloaded. To preview the latest `main` (⌘/Ctrl-click
-to open in a new tab):
+Every PR posts a one-click WordPress Playground link with WordPress 7.0 RC,
+WooCommerce, the **AI Provider for Google** connector, this plugin, and three
+handcrafted Sicilian-ceramic sample products (Pigna Siciliana, Testa di Moro,
+Piatto Trinacria) preloaded. To preview the latest `main` (⌘/Ctrl-click to
+open in a new tab):
 
 ▶️ **[Open `main` in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/blueprint-main.json)**
 
