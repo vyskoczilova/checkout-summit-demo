@@ -5,7 +5,10 @@
     "landingPage": "/wp-admin/options-connectors.php",
     "login": true,
     "siteOptions": {
-        "blogname": "Checkout Summit Demo"
+        "blogname": "Checkout Summit Demo",
+        "woocommerce_task_list_hidden": "yes",
+        "woocommerce_extended_task_list_hidden": "yes",
+        "woocommerce_show_marketplace_suggestions": "no"
     },
     "steps": [
         {

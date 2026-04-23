@@ -21,8 +21,13 @@ class Playground_Bootstrap {
 
     public static function register() {
         add_action( 'plugins_loaded', array( __CLASS__, 'block_wc_activation_redirect' ), 1 );
-        add_action( 'wp_loaded', array( __CLASS__, 'maybe_run' ), 99 );
+        // Run BEFORE WC's onboarding redirect (which fires on admin_init priority 10).
+        add_action( 'admin_init', array( __CLASS__, 'maybe_run' ), 0 );
+        // Also try on init (front-end visits) so the very first page imports too.
+        add_action( 'init', array( __CLASS__, 'maybe_run' ), 99 );
         add_action( 'admin_notices', array( __CLASS__, 'show_log_notice' ) );
+        // Belt-and-braces: short-circuit WC's onboarding redirect on admin pages.
+        add_filter( 'woocommerce_admin_onboarding_should_show_tasks', '__return_false' );
     }
 
     public static function is_playground() {
