@@ -26,11 +26,28 @@ add_action( 'init', function () {
 	update_option( 'csd_playground_bootstrap_done', 1 );
 
 	try {
-		csd_playground_import_products();
+		$status = csd_playground_import_products();
 	} catch ( \Throwable $e ) {
-		error_log( '[CSD] Bootstrap failed: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine() );
+		$status = 'Bootstrap exception: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine();
+		error_log( '[CSD] ' . $status );
 	}
+	update_option( 'csd_playground_bootstrap_status', $status );
 }, 20 );
+
+// Surface the import outcome as an admin notice so failures aren't invisible
+// inside Playground (where the PHP error log isn't easy to reach).
+add_action( 'admin_notices', function () {
+	$status = get_option( 'csd_playground_bootstrap_status' );
+	if ( empty( $status ) ) {
+		return;
+	}
+	$is_ok = is_string( $status ) && str_starts_with( $status, 'imported=' );
+	printf(
+		'<div class="notice notice-%s"><p><strong>CSD bootstrap:</strong> %s</p></div>',
+		$is_ok ? 'success' : 'error',
+		esc_html( (string) $status )
+	);
+} );
 
 function csd_playground_import_products() {
 	// Playground's WP-Cron doesn't run on boot, so WooCommerce's scheduled
@@ -45,7 +62,7 @@ function csd_playground_import_products() {
 
 	$csv = '/wordpress/wp-content/uploads/csd-import.csv';
 	if ( ! is_readable( $csv ) ) {
-		return;
+		return 'CSV not readable at ' . $csv;
 	}
 
 	// WooCommerce's autoloader doesn't map the includes/import/ or
@@ -59,8 +76,7 @@ function csd_playground_import_products() {
 	);
 	foreach ( $deps as $dep ) {
 		if ( ! is_readable( $dep ) ) {
-			error_log( '[CSD] Missing WC importer file: ' . $dep );
-			return;
+			return 'Missing WC importer file: ' . $dep;
 		}
 		require_once $dep;
 	}
@@ -81,11 +97,16 @@ function csd_playground_import_products() {
 		fclose( $fh );
 	}
 	if ( empty( $headers ) ) {
-		return;
+		return 'CSV header row is empty';
 	}
+	// Strip a UTF-8 BOM off the first header if present — fgetcsv doesn't.
+	$headers[0] = preg_replace( '/^\xEF\xBB\xBF/', '', (string) $headers[0] );
 
 	$controller = new \WC_Product_CSV_Importer_Controller();
-	$mapping    = $controller->auto_map_columns( $headers, false );
+	// auto_map_columns() defaults to numeric keys; WC's set_mapped_keys()
+	// looks up $mapping[$numeric_index], so numeric keys are required —
+	// passing false here makes the mapping a no-op.
+	$mapping = $controller->auto_map_columns( $headers );
 
 	$importer = new \WC_Product_CSV_Importer(
 		$csv,
@@ -100,11 +121,13 @@ function csd_playground_import_products() {
 	);
 	$results = $importer->import();
 
-	error_log( sprintf(
-		'[CSD] CSV import: imported=%d updated=%d skipped=%d failed=%d',
+	$status = sprintf(
+		'imported=%d updated=%d skipped=%d failed=%d',
 		isset( $results['imported'] ) ? count( $results['imported'] ) : 0,
 		isset( $results['updated'] )  ? count( $results['updated'] )  : 0,
 		isset( $results['skipped'] )  ? count( $results['skipped'] )  : 0,
 		isset( $results['failed'] )   ? count( $results['failed'] )   : 0
-	) );
+	);
+	error_log( '[CSD] CSV import: ' . $status );
+	return $status;
 }
