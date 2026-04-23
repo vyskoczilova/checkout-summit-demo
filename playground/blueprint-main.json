@@ -4,17 +4,14 @@
     "features": { "networking": true },
     "landingPage": "/wp-admin/options-connectors.php",
     "login": true,
+    "siteOptions": {
+        "blogname": "Checkout Summit Demo",
+        "woocommerce_task_list_hidden": "yes",
+        "woocommerce_extended_task_list_hidden": "yes",
+        "woocommerce_show_marketplace_suggestions": "no"
+    },
+    "extraLibraries": ["wp-cli"],
     "steps": [
-        {
-            "step": "setSiteOptions",
-            "options": {
-                "blogname": "Checkout Summit Demo",
-                "woocommerce_task_list_hidden": "yes",
-                "woocommerce_extended_task_list_hidden": "yes",
-                "woocommerce_show_marketplace_suggestions": "no",
-                "woocommerce_allow_tracking": "no"
-            }
-        },
         {
             "step": "installPlugin",
             "pluginData": { "resource": "wordpress.org/plugins", "slug": "woocommerce" },
@@ -28,6 +25,14 @@
         {
             "step": "installPlugin",
             "pluginData": {
+                "resource": "url",
+                "url": "https://github.com/woocommerce/wc-smooth-generator/releases/latest/download/wc-smooth-generator.zip"
+            },
+            "options": { "activate": true }
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
                 "resource": "git:directory",
                 "url": "https://github.com/vyskoczilova/checkout-summit-demo",
                 "ref": "main",
@@ -36,20 +41,8 @@
             "options": { "activate": true }
         },
         {
-            "step": "writeFile",
-            "path": "/wordpress/wp-content/uploads/csd-import.csv",
-            "data": {
-                "resource": "url",
-                "url": "https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/sample-products.csv"
-            }
-        },
-        {
-            "step": "writeFile",
-            "path": "/wordpress/wp-content/mu-plugins/csd-bootstrap.php",
-            "data": {
-                "resource": "url",
-                "url": "https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/csd-bootstrap.php"
-            }
+            "step": "wp-cli",
+            "command": "wp wc generate products 20"
         }
     ]
 }
