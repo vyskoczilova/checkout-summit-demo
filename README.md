@@ -10,8 +10,9 @@ product gallery — using **WordPress 7.0's built-in AI Client**.
 ## Try it in your browser
 
 Every PR posts a one-click WordPress Playground link with WordPress,
-WooCommerce, the WP `ai` plugin + Google provider, this plugin, and two
-beanie sample products preloaded. To preview the latest `main` (⌘/Ctrl-click
+WooCommerce, the WP `ai` plugin + Google provider, this plugin, and three
+handcrafted Sicilian-ceramic sample products (Pigna, Testa di Moro, Piatto
+Trinacria) preloaded. To preview the latest `main` (⌘/Ctrl-click
 to open in a new tab):
 
 ▶️ **[Open `main` in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/vyskoczilova/checkout-summit-demo/main/playground/blueprint-main.json)**
@@ -24,7 +25,7 @@ to open in a new tab):
 
 ## Use
 
-1. Open one of the imported beanie products.
+1. Open one of the imported Sicilian-ceramic products (Pigna, Testa di Moro, or Piatto Trinacria).
 2. In the sidebar, find **AI Gallery Generator**.
 3. Click **Choose source image** (or skip — the featured image is used as a
    fallback).
