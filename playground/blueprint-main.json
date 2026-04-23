@@ -8,7 +8,8 @@
         "blogname": "Checkout Summit Demo",
         "woocommerce_task_list_hidden": "yes",
         "woocommerce_extended_task_list_hidden": "yes",
-        "woocommerce_show_marketplace_suggestions": "no"
+        "woocommerce_show_marketplace_suggestions": "no",
+        "csd_seed_products": "1"
     },
     "extraLibraries": ["wp-cli"],
     "steps": [
@@ -31,10 +32,6 @@
                 "refType": "branch"
             },
             "options": { "activate": true }
-        },
-        {
-            "step": "wp-cli",
-            "command": "wp eval include(glob(WP_PLUGIN_DIR.'/*/playground/seed-products.php')[0]??die('seed-products.php_not_found_plugin_dirs:'.implode(',',array_map('basename',glob(WP_PLUGIN_DIR.'/*',GLOB_ONLYDIR)))))"
         }
     ]
 }

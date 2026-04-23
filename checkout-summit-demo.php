@@ -26,8 +26,10 @@ require_once CHECKOUT_SUMMIT_DEMO_DIR . 'includes/class-prompt-builder.php';
 require_once CHECKOUT_SUMMIT_DEMO_DIR . 'includes/class-generator.php';
 require_once CHECKOUT_SUMMIT_DEMO_DIR . 'includes/class-ajax.php';
 require_once CHECKOUT_SUMMIT_DEMO_DIR . 'includes/class-metabox.php';
+require_once CHECKOUT_SUMMIT_DEMO_DIR . 'includes/class-playground-seed.php';
 
 add_action( 'init', function () {
     \CheckoutSummitDemo\Metabox::register();
     \CheckoutSummitDemo\Ajax::register();
+    \CheckoutSummitDemo\Playground_Seed::register();
 } );
