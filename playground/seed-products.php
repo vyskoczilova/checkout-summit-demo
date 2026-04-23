@@ -21,26 +21,7 @@ if ( ! class_exists( 'WooCommerce' ) ) {
     return;
 }
 
-require_once ABSPATH . 'wp-admin/includes/image.php';
 require_once ABSPATH . 'wp-admin/includes/file.php';
-require_once ABSPATH . 'wp-admin/includes/media.php';
-
-// Allow SVG uploads for the seeded featured images. Scoped to this request.
-add_filter( 'upload_mimes', function ( $mimes ) {
-    $mimes['svg']  = 'image/svg+xml';
-    $mimes['svgz'] = 'image/svg+xml';
-    return $mimes;
-} );
-add_filter( 'wp_check_filetype_and_ext', function ( $data, $file, $filename ) {
-    if ( preg_match( '/\.svgz?$/i', $filename ) ) {
-        return array(
-            'ext'             => 'svg',
-            'type'            => 'image/svg+xml',
-            'proper_filename' => $filename,
-        );
-    }
-    return $data;
-}, 10, 3 );
 
 $images_dir = __DIR__ . '/images/';
 
@@ -119,11 +100,39 @@ HTML,
     ),
 );
 
+$upload_path = wp_upload_dir()['path'];
+
+$attach_featured_svg = static function ( $product_id, $src, $filename, $title, $alt ) use ( $upload_path ) {
+    if ( ! file_exists( $src ) ) {
+        return;
+    }
+    $dest = trailingslashit( $upload_path ) . wp_unique_filename( $upload_path, $filename );
+    if ( ! copy( $src, $dest ) ) {
+        return;
+    }
+    $attach_id = wp_insert_attachment(
+        array(
+            'post_mime_type' => 'image/svg+xml',
+            'post_title'     => sanitize_text_field( $title ),
+            'post_content'   => '',
+            'post_status'    => 'inherit',
+            'post_excerpt'   => $alt,
+        ),
+        $dest,
+        $product_id
+    );
+    if ( ! $attach_id || is_wp_error( $attach_id ) ) {
+        return;
+    }
+    // wp_generate_attachment_metadata runs getimagesize(), which can't read SVG.
+    update_post_meta( $attach_id, '_wp_attachment_image_alt', $alt );
+    set_post_thumbnail( $product_id, $attach_id );
+};
+
 $created = 0;
 $skipped = 0;
 
 foreach ( $products as $p ) {
-    // Idempotency: skip if a product with this SKU already exists.
     $existing_id = wc_get_product_id_by_sku( $p['sku'] );
     if ( $existing_id ) {
         $skipped++;
@@ -153,69 +162,16 @@ foreach ( $products as $p ) {
         $product->set_height( $p['dimensions']['height'] );
     }
 
-    $cat_ids = array();
-    foreach ( $p['categories'] as $cat_name ) {
-        $term = get_term_by( 'name', $cat_name, 'product_cat' );
-        if ( ! $term ) {
-            $inserted = wp_insert_term( $cat_name, 'product_cat' );
-            if ( ! is_wp_error( $inserted ) ) {
-                $cat_ids[] = (int) $inserted['term_id'];
-            }
-        } else {
-            $cat_ids[] = (int) $term->term_id;
-        }
-    }
-    if ( $cat_ids ) {
-        $product->set_category_ids( $cat_ids );
-    }
-
-    if ( ! empty( $p['tags'] ) ) {
-        $tag_ids = array();
-        foreach ( $p['tags'] as $tag_name ) {
-            $term = get_term_by( 'name', $tag_name, 'product_tag' );
-            if ( ! $term ) {
-                $inserted = wp_insert_term( $tag_name, 'product_tag' );
-                if ( ! is_wp_error( $inserted ) ) {
-                    $tag_ids[] = (int) $inserted['term_id'];
-                }
-            } else {
-                $tag_ids[] = (int) $term->term_id;
-            }
-        }
-        if ( $tag_ids ) {
-            $product->set_tag_ids( $tag_ids );
-        }
-    }
-
     $product_id = $product->save();
 
-    // Sideload the bundled SVG illustration as the featured image.
-    $src = $images_dir . $p['image'];
-    if ( file_exists( $src ) ) {
-        $upload_dir = wp_upload_dir();
-        if ( ! file_exists( $upload_dir['path'] ) ) {
-            wp_mkdir_p( $upload_dir['path'] );
-        }
-        $filename  = wp_unique_filename( $upload_dir['path'], $p['image'] );
-        $dest_path = trailingslashit( $upload_dir['path'] ) . $filename;
-        if ( copy( $src, $dest_path ) ) {
-            $attachment = array(
-                'post_mime_type' => 'image/svg+xml',
-                'post_title'     => sanitize_text_field( $p['title'] ),
-                'post_content'   => '',
-                'post_status'    => 'inherit',
-                'post_excerpt'   => $p['image_alt'],
-            );
-            $attach_id = wp_insert_attachment( $attachment, $dest_path, $product_id );
-            if ( $attach_id && ! is_wp_error( $attach_id ) ) {
-                // Don't call wp_generate_attachment_metadata on SVGs — it will try
-                // to read raster dimensions with getimagesize() and fail silently.
-                // WP will still render the SVG via the <img> tag + intrinsic size.
-                update_post_meta( $attach_id, '_wp_attachment_image_alt', $p['image_alt'] );
-                set_post_thumbnail( $product_id, $attach_id );
-            }
-        }
+    if ( ! empty( $p['categories'] ) ) {
+        wp_set_object_terms( $product_id, $p['categories'], 'product_cat' );
     }
+    if ( ! empty( $p['tags'] ) ) {
+        wp_set_object_terms( $product_id, $p['tags'], 'product_tag' );
+    }
+
+    $attach_featured_svg( $product_id, $images_dir . $p['image'], $p['image'], $p['title'], $p['image_alt'] );
 
     $created++;
     if ( class_exists( 'WP_CLI' ) ) {
