@@ -25,14 +25,6 @@
         {
             "step": "installPlugin",
             "pluginData": {
-                "resource": "url",
-                "url": "https://github.com/woocommerce/wc-smooth-generator/releases/latest/download/wc-smooth-generator.zip"
-            },
-            "options": { "activate": true }
-        },
-        {
-            "step": "installPlugin",
-            "pluginData": {
                 "resource": "git:directory",
                 "url": "https://github.com/vyskoczilova/checkout-summit-demo",
                 "ref": "main",
@@ -42,7 +34,7 @@
         },
         {
             "step": "wp-cli",
-            "command": "wp wc generate products 20"
+            "command": "wp eval-file wp-content/plugins/checkout-summit-demo/playground/seed-products.php"
         }
     ]
 }

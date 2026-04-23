@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#ffffff"/>
+  <defs>
+    <radialGradient id="plate" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0%" stop-color="#fff9e6"/>
+      <stop offset="60%" stop-color="#f4e6b5"/>
+      <stop offset="100%" stop-color="#c9a64d"/>
+    </radialGradient>
+    <radialGradient id="plateCentre" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#f7ecc0"/>
+      <stop offset="100%" stop-color="#d9b64a"/>
+    </radialGradient>
+    <linearGradient id="leg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2c744"/>
+      <stop offset="100%" stop-color="#8a6a1a"/>
+    </linearGradient>
+    <radialGradient id="shadow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wheat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2d878"/>
+      <stop offset="100%" stop-color="#a8781a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ground shadow under plate -->
+  <ellipse cx="400" cy="720" rx="280" ry="18" fill="url(#shadow)"/>
+
+  <!-- outer plate rim -->
+  <circle cx="400" cy="400" r="340" fill="url(#plate)" stroke="#6a4a10" stroke-width="3"/>
+  <!-- decorative outer ring pattern -->
+  <g stroke="#1b3a7a" stroke-width="2" fill="none">
+    <circle cx="400" cy="400" r="325"/>
+    <circle cx="400" cy="400" r="305"/>
+  </g>
+  <!-- floral rim dots -->
+  <g fill="#c9352b">
+    <!-- 12 dots around rim -->
+    <circle cx="400" cy="85" r="8"/>
+    <circle cx="557" cy="127" r="8"/>
+    <circle cx="673" cy="243" r="8"/>
+    <circle cx="715" cy="400" r="8"/>
+    <circle cx="673" cy="557" r="8"/>
+    <circle cx="557" cy="673" r="8"/>
+    <circle cx="400" cy="715" r="8"/>
+    <circle cx="243" cy="673" r="8"/>
+    <circle cx="127" cy="557" r="8"/>
+    <circle cx="85" cy="400" r="8"/>
+    <circle cx="127" cy="243" r="8"/>
+    <circle cx="243" cy="127" r="8"/>
+  </g>
+  <!-- leaves between dots -->
+  <g fill="#4a8a4a">
+    <circle cx="480" cy="96" r="4"/>
+    <circle cx="620" cy="180" r="4"/>
+    <circle cx="704" cy="320" r="4"/>
+    <circle cx="704" cy="480" r="4"/>
+    <circle cx="620" cy="620" r="4"/>
+    <circle cx="480" cy="704" r="4"/>
+    <circle cx="320" cy="704" r="4"/>
+    <circle cx="180" cy="620" r="4"/>
+    <circle cx="96" cy="480" r="4"/>
+    <circle cx="96" cy="320" r="4"/>
+    <circle cx="180" cy="180" r="4"/>
+    <circle cx="320" cy="96" r="4"/>
+  </g>
+
+  <!-- inner well -->
+  <circle cx="400" cy="400" r="265" fill="url(#plateCentre)" stroke="#6a4a10" stroke-width="2"/>
+
+  <!-- Trinacria symbol: 3 bent legs + Medusa centre -->
+  <!-- leg 1 - top -->
+  <g transform="translate(400 400) rotate(-90)">
+    <path d="M 0 0 Q 80 -20 160 -80 Q 120 0 180 40 L 140 80 Q 100 40 60 60 Q 40 30 0 0 Z"
+          fill="url(#leg)" stroke="#3a2408" stroke-width="3"/>
+  </g>
+  <!-- leg 2 - lower left -->
+  <g transform="translate(400 400) rotate(30)">
+    <path d="M 0 0 Q 80 -20 160 -80 Q 120 0 180 40 L 140 80 Q 100 40 60 60 Q 40 30 0 0 Z"
+          fill="url(#leg)" stroke="#3a2408" stroke-width="3"/>
+  </g>
+  <!-- leg 3 - lower right -->
+  <g transform="translate(400 400) rotate(150)">
+    <path d="M 0 0 Q 80 -20 160 -80 Q 120 0 180 40 L 140 80 Q 100 40 60 60 Q 40 30 0 0 Z"
+          fill="url(#leg)" stroke="#3a2408" stroke-width="3"/>
+  </g>
+
+  <!-- wheat ears around centre (6) -->
+  <g>
+    <g transform="translate(400 400) rotate(0)"><path d="M 0 -100 L 10 -70 L 0 -80 L -10 -70 Z" fill="url(#wheat)" stroke="#5a3d0f"/></g>
+    <g transform="translate(400 400) rotate(60)"><path d="M 0 -100 L 10 -70 L 0 -80 L -10 -70 Z" fill="url(#wheat)" stroke="#5a3d0f"/></g>
+    <g transform="translate(400 400) rotate(120)"><path d="M 0 -100 L 10 -70 L 0 -80 L -10 -70 Z" fill="url(#wheat)" stroke="#5a3d0f"/></g>
+    <g transform="translate(400 400) rotate(180)"><path d="M 0 -100 L 10 -70 L 0 -80 L -10 -70 Z" fill="url(#wheat)" stroke="#5a3d0f"/></g>
+    <g transform="translate(400 400) rotate(240)"><path d="M 0 -100 L 10 -70 L 0 -80 L -10 -70 Z" fill="url(#wheat)" stroke="#5a3d0f"/></g>
+    <g transform="translate(400 400) rotate(300)"><path d="M 0 -100 L 10 -70 L 0 -80 L -10 -70 Z" fill="url(#wheat)" stroke="#5a3d0f"/></g>
+  </g>
+
+  <!-- Medusa head (stylized) -->
+  <circle cx="400" cy="400" r="70" fill="#f2d878" stroke="#3a2408" stroke-width="3"/>
+  <!-- snake curls -->
+  <g fill="#4a8a4a" stroke="#153a18" stroke-width="2">
+    <circle cx="340" cy="355" r="12"/>
+    <circle cx="460" cy="355" r="12"/>
+    <circle cx="335" cy="400" r="10"/>
+    <circle cx="465" cy="400" r="10"/>
+    <circle cx="350" cy="445" r="10"/>
+    <circle cx="450" cy="445" r="10"/>
+  </g>
+  <!-- face features -->
+  <circle cx="380" cy="395" r="5" fill="#0d0603"/>
+  <circle cx="420" cy="395" r="5" fill="#0d0603"/>
+  <path d="M 380 425 Q 400 440 420 425" stroke="#0d0603" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 395 405 Q 400 415 405 405" stroke="#0d0603" stroke-width="2" fill="none"/>
+</svg>

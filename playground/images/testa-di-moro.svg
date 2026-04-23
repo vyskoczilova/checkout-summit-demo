@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#ffffff"/>
+  <defs>
+    <radialGradient id="skin" cx="0.4" cy="0.35" r="0.75">
+      <stop offset="0%" stop-color="#8a5c3a"/>
+      <stop offset="60%" stop-color="#5c381f"/>
+      <stop offset="100%" stop-color="#2e1a0c"/>
+    </radialGradient>
+    <linearGradient id="crown" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2c744"/>
+      <stop offset="100%" stop-color="#a8781a"/>
+    </linearGradient>
+    <linearGradient id="plinth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3f0e4"/>
+      <stop offset="100%" stop-color="#b8b29a"/>
+    </linearGradient>
+    <radialGradient id="shadow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="floral" x="0" y="0" width="42" height="42" patternUnits="userSpaceOnUse">
+      <rect width="42" height="42" fill="#1b3a7a"/>
+      <circle cx="21" cy="21" r="7" fill="#f2c744"/>
+      <circle cx="21" cy="21" r="3" fill="#c9352b"/>
+      <circle cx="0" cy="0" r="4" fill="#9ec447"/>
+      <circle cx="42" cy="0" r="4" fill="#9ec447"/>
+      <circle cx="0" cy="42" r="4" fill="#9ec447"/>
+      <circle cx="42" cy="42" r="4" fill="#9ec447"/>
+    </pattern>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="400" cy="730" rx="220" ry="22" fill="url(#shadow)"/>
+
+  <!-- plinth / base -->
+  <path d="M 260 720 L 540 720 L 560 695 L 240 695 Z" fill="url(#plinth)" stroke="#6a6450" stroke-width="2"/>
+  <rect x="250" y="660" width="300" height="38" fill="url(#floral)" stroke="#0d2050" stroke-width="2"/>
+
+  <!-- neck -->
+  <path d="M 330 665 Q 330 600 335 560 L 465 560 Q 470 600 470 665 Z" fill="url(#skin)" stroke="#1a0b05" stroke-width="2"/>
+
+  <!-- face / head -->
+  <ellipse cx="400" cy="420" rx="155" ry="180" fill="url(#skin)" stroke="#1a0b05" stroke-width="2"/>
+
+  <!-- ears -->
+  <ellipse cx="245" cy="440" rx="22" ry="36" fill="url(#skin)" stroke="#1a0b05" stroke-width="2"/>
+  <ellipse cx="555" cy="440" rx="22" ry="36" fill="url(#skin)" stroke="#1a0b05" stroke-width="2"/>
+  <!-- gold earrings -->
+  <circle cx="245" cy="480" r="10" fill="url(#crown)" stroke="#5a3d0f" stroke-width="1"/>
+  <circle cx="555" cy="480" r="10" fill="url(#crown)" stroke="#5a3d0f" stroke-width="1"/>
+
+  <!-- crown turban -->
+  <path d="M 250 330 Q 260 230 400 215 Q 540 230 550 330 Q 540 280 500 270 Q 460 240 400 240 Q 340 240 300 270 Q 260 280 250 330 Z"
+        fill="url(#floral)" stroke="#0d2050" stroke-width="2.5"/>
+  <!-- turban band with gold -->
+  <rect x="252" y="320" width="296" height="26" fill="url(#crown)" stroke="#5a3d0f" stroke-width="1.5"/>
+  <!-- crown top jewel -->
+  <path d="M 370 215 L 400 180 L 430 215 Z" fill="url(#crown)" stroke="#5a3d0f" stroke-width="2"/>
+  <circle cx="400" cy="205" r="8" fill="#c9352b" stroke="#5a3d0f" stroke-width="1"/>
+
+  <!-- eyebrows -->
+  <path d="M 320 400 Q 345 390 370 400" stroke="#0d0603" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M 430 400 Q 455 390 480 400" stroke="#0d0603" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+  <!-- eyes -->
+  <ellipse cx="345" cy="425" rx="18" ry="10" fill="#f5efe0"/>
+  <ellipse cx="455" cy="425" rx="18" ry="10" fill="#f5efe0"/>
+  <circle cx="345" cy="425" r="6" fill="#0d0603"/>
+  <circle cx="455" cy="425" r="6" fill="#0d0603"/>
+
+  <!-- nose -->
+  <path d="M 400 430 Q 388 475 395 495 Q 400 500 405 495 Q 412 475 400 430 Z" fill="#3a1f10" opacity="0.55"/>
+
+  <!-- mustache -->
+  <path d="M 340 520 Q 365 510 400 515 Q 435 510 460 520 Q 440 530 400 530 Q 360 530 340 520 Z" fill="#0d0603"/>
+
+  <!-- lips -->
+  <path d="M 365 545 Q 400 555 435 545 Q 420 565 400 565 Q 380 565 365 545 Z" fill="#7a2a22"/>
+</svg>
