@@ -115,12 +115,13 @@ class Playground_Bootstrap {
         if ( ! self::is_playground() ) {
             return;
         }
-        $log_file = WP_CONTENT_DIR . '/' . self::LOG_BASENAME;
-        if ( ! file_exists( $log_file ) ) {
-            echo '<div class="notice notice-warning"><p><strong>CSD bootstrap:</strong> log file not found at ' . esc_html( $log_file ) . '</p></div>';
+        if ( ! get_option( self::DONE_OPTION ) ) {
             return;
         }
-        $log = @file_get_contents( $log_file );
-        echo '<div class="notice notice-info"><p><strong>CSD Playground bootstrap log:</strong></p><pre style="white-space:pre-wrap;max-height:200px;overflow:auto">' . esc_html( $log ) . '</pre></div>';
+        $count = (int) wp_count_posts( 'product' )->publish;
+        echo '<div class="notice notice-success is-dismissible"><p>'
+            . '<strong>Playground demo ready.</strong> Imported ' . esc_html( (string) $count ) . ' WooCommerce sample products. '
+            . 'Configure your Gemini API key under <strong>Settings → AI Connectors → Google</strong>, then open any product to try the AI Gallery Generator.'
+            . '</p></div>';
     }
 }
