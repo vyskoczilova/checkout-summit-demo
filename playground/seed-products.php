@@ -33,7 +33,7 @@ $products = array(
         'price'      => '58.00',
         'weight'     => '1.4',
         'dimensions' => array( 'length' => '20', 'width' => '20', 'height' => '30' ),
-        'image'      => 'pigna-siciliana.jpg',
+        'image'      => 'pigna-siciliana',
         'image_alt'  => 'Sicilian ceramic pigna on white background',
         'short'     => 'Handcrafted ceramic pinecone from Caltagirone — Sicily’s timeless symbol of prosperity, fertility and good fortune. 100% made and hand-painted in Sicily.',
         'long'      => <<<HTML
@@ -57,7 +57,7 @@ HTML,
         'price'      => '145.00',
         'weight'     => '3.2',
         'dimensions' => array( 'length' => '25', 'width' => '25', 'height' => '35' ),
-        'image'      => 'testa-di-moro.jpg',
+        'image'      => 'testa-di-moro',
         'image_alt'  => 'Sicilian Testa di Moro ceramic head vase on white background',
         'short'     => 'Iconic Moor’s head ceramic vase, hand-painted in Caltagirone. Inspired by the legend of the Kalsa quarter in Palermo — a statement centrepiece for home, terrace or garden.',
         'long'      => <<<HTML
@@ -81,7 +81,7 @@ HTML,
         'price'      => '85.00',
         'weight'     => '1.8',
         'dimensions' => array( 'length' => '35', 'width' => '35', 'height' => '4' ),
-        'image'      => 'trinacria.jpg',
+        'image'      => 'trinacria',
         'image_alt'  => 'Sicilian Trinacria decorative ceramic plate on white background',
         'short'     => 'Decorative Sicilian plate featuring the Trinacria — the three-legged triskelion at the heart of the Sicilian flag, crowned by Medusa and the golden ears of wheat.',
         'long'      => <<<HTML
@@ -103,16 +103,19 @@ HTML,
 
 $upload_path = wp_upload_dir()['path'];
 
-$attach_featured_image = static function ( $product_id, $src, $filename, $title, $alt ) use ( $upload_path ) {
-    if ( ! file_exists( $src ) ) {
+$attach_featured_image = static function ( $product_id, $image_base, $title, $alt ) use ( $upload_path, $images_dir ) {
+    $matches = glob( $images_dir . $image_base . '.*' );
+    if ( ! $matches ) {
         return;
     }
-    $dest = trailingslashit( $upload_path ) . wp_unique_filename( $upload_path, $filename );
+    $src      = $matches[0];
+    $filename = basename( $src );
+    $dest     = trailingslashit( $upload_path ) . wp_unique_filename( $upload_path, $filename );
     if ( ! copy( $src, $dest ) ) {
         return;
     }
     $filetype = wp_check_filetype( $filename );
-    $mime = $filetype['type'] ?: 'application/octet-stream';
+    $mime     = $filetype['type'] ?: 'application/octet-stream';
     $attach_id = wp_insert_attachment(
         array(
             'post_mime_type' => $mime,
@@ -176,7 +179,7 @@ foreach ( $products as $p ) {
         wp_set_object_terms( $product_id, $p['tags'], 'product_tag' );
     }
 
-    $attach_featured_image( $product_id, $images_dir . $p['image'], $p['image'], $p['title'], $p['image_alt'] );
+    $attach_featured_image( $product_id, $p['image'], $p['title'], $p['image_alt'] );
 
     $created++;
     if ( class_exists( 'WP_CLI' ) ) {
