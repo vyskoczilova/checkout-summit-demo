@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CSD Playground Bootstrap
- * Description: One-time Playground setup — skips the WC onboarding wizard and imports the beanie sample products.
+ * Description: One-time Playground setup — skips the WC onboarding wizard and imports WooCommerce's bundled sample products.
  */
 
 // Block the WC activation-redirect that would otherwise hijack the first page load.
