@@ -21,10 +21,12 @@ class Playground_Seed {
     const DONE_OPTION    = 'csd_seed_products_done';
 
     public static function register() {
-        add_action( 'admin_init', array( __CLASS__, 'maybe_seed' ), 1 );
+        // Priority 0 so we beat WC's own admin_init handler that redirects
+        // first-run installs into the profile wizard.
+        add_action( 'admin_init', array( __CLASS__, 'maybe_bootstrap' ), 0 );
     }
 
-    public static function maybe_seed() {
+    public static function maybe_bootstrap() {
         if ( get_option( self::DONE_OPTION ) ) {
             return;
         }
@@ -33,6 +35,14 @@ class Playground_Seed {
         }
         if ( ! class_exists( 'WooCommerce' ) ) {
             return;
+        }
+
+        delete_transient( '_wc_activation_redirect' );
+        if ( false === get_option( 'woocommerce_onboarding_profile' ) ) {
+            update_option( 'woocommerce_onboarding_profile', array(
+                'completed' => true,
+                'skipped'   => true,
+            ) );
         }
 
         require_once CHECKOUT_SUMMIT_DEMO_DIR . 'playground/seed-products.php';
