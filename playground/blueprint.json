@@ -42,7 +42,7 @@
         },
         {
             "step": "wp-cli",
-            "command": "wp wc generate products 20 --image"
+            "command": "wp wc generate products 20"
         }
     ]
 }
