@@ -34,7 +34,7 @@
         },
         {
             "step": "wp-cli",
-            "command": "wp eval \"$f=glob(WP_PLUGIN_DIR.'/*/playground/seed-products.php');if($f){include $f[0];}else{$dirs=array_map('basename',glob(WP_PLUGIN_DIR.'/*',GLOB_ONLYDIR));fwrite(STDERR,'seed-products.php not found under any plugin dir. Installed plugin dirs: '.implode(', ',$dirs).PHP_EOL);exit(1);}\""
+            "command": "wp eval \"include (glob(WP_PLUGIN_DIR . '/*/playground/seed-products.php')[0] ?? die('seed-products.php not found. Plugin dirs: ' . implode(',', array_map('basename', glob(WP_PLUGIN_DIR . '/*', GLOB_ONLYDIR)))))\""
         }
     ]
 }
