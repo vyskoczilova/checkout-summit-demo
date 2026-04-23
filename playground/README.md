@@ -9,7 +9,13 @@ manually reviewing this plugin in a browser — no local WordPress required.
 - WooCommerce
 - WP `ai` plugin + `ai-provider-for-google`
 - This plugin (loaded directly from the PR ref via `git:directory`)
-- Two beanie sample products imported from `sample-products.csv`
+- Three handcrafted Sicilian-ceramic sample products seeded by
+  `seed-products.php`: a _Pigna Siciliana_, a _Testa di Moro_ vase and a
+  _Piatto Trinacria_ — each with full title, description, price, category,
+  and an illustrative featured image from `playground/images/`. After boot,
+  open any of them from **Products → All Products** and use the "AI Gallery
+  Generator" metabox to generate real photo-like gallery variations via the
+  Gemini connector.
 
 ## How it's used
 
