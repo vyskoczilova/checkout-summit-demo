@@ -4,17 +4,10 @@
     "features": { "networking": true },
     "landingPage": "/wp-admin/options-connectors.php",
     "login": true,
+    "siteOptions": {
+        "blogname": "Checkout Summit Demo"
+    },
     "steps": [
-        {
-            "step": "setSiteOptions",
-            "options": {
-                "blogname": "Checkout Summit Demo",
-                "woocommerce_task_list_hidden": "yes",
-                "woocommerce_extended_task_list_hidden": "yes",
-                "woocommerce_show_marketplace_suggestions": "no",
-                "woocommerce_allow_tracking": "no"
-            }
-        },
         {
             "step": "installPlugin",
             "pluginData": { "resource": "wordpress.org/plugins", "slug": "woocommerce" },
@@ -34,14 +27,6 @@
                 "refType": "refname"
             },
             "options": { "activate": true }
-        },
-        {
-            "step": "writeFile",
-            "path": "/wordpress/wp-content/mu-plugins/csd-bootstrap.php",
-            "data": {
-                "resource": "url",
-                "url": "https://raw.githubusercontent.com/{{REPO}}/{{PR_REF}}/playground/csd-bootstrap.php"
-            }
         }
     ]
 }
